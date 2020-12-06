@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire | Js</title>
+    <style>
+        button{
+            padding: 30px ;
+            margin: 30px ;
+            background: rgb(164,0,28);
+background: linear-gradient(90deg, rgba(164,0,28,1) 0%, rgba(253,29,29,1) 50%, rgba(252,69,236,1) 100%);
+        }
+        button:hover{
+            color: rgb(253, 253, 253);
+            background: rgb(80,92,195);
+background: linear-gradient(90deg, rgba(80,92,195,1) 0%, rgba(29,233,253,1) 93%, rgba(252,69,236,1) 100%);
+        }
+         p{
+             font-weight: bold;
+             font-size: larger;
+         }
+        ol{
+          
+             list-style-type: none;
+        }
+        li:hover{
+            color: blueviolet;
+            list-style-type: none;
+        }
+        input{
+            position: relative;
+            margin: 10px;
+            padding: 10px;
+        }
+        button{
+            font-weight: bold ;
+            font-size: medium;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="reg">
+            <ol>
+              <li><p>Name : <input  id="Name" type="text">  </p></li>
+              <li><p>Roll No:<input  id="rollno" type="text">  </p></li>
+              <li> <p>Section:<input  id="section" type="text">  </p></li>
+              <li> <p>Gender :<input  id="gender" type="text">  </p></li>
+            </ol>
+        </div>
+        <button id="insert">Insert </button>
+        <button id="read">READ</button>
+        <button id="update">Update </button>
+        <button id="delete">Delete </button>
+    </main>
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyAxzKAjv5ZutXA9r-zNZgcrBCjb0lnb95A",
+      authDomain: "fir-js-a9b38.firebaseapp.com",
+      projectId: "fir-js-a9b38",
+      storageBucket: "fir-js-a9b38.appspot.com",
+      messagingSenderId: "166693278526",
+      appId: "1:166693278526:web:7839a203002900c133526f",
+      measurementId: "G-HQDH13LVBL"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    //<!--Read the data-->
+    var namef,rollnof,sectionf,genderf;
+    function getdata() {
+        namef=document.getElementById("Name").value;
+        rollnof=document.getElementById("rollno").value;
+        sectionf=document.getElementById("section").value;
+        genderf=document.getElementById("gender").value;
+        console.log(namef);
+    }
+    /*Insert data to FirebASE*/
+    document.getElementById("insert").onclick=function(){
+         getdata();
+         firebase.database().ref('student/'+rollnof).set({
+             NameofStudent :namef,
+             RollNumber :rollnof,
+             Section :sectionf,
+             Gender :genderf
+
+         });
+    }
+    /*Read Dtata*/
+    document.getElementById("read").onclick=function(){
+        getdata();
+        firebase.database().ref('student/'+rollnof).on('value',function(snapshot){
+            document.getElementById("Name").value=snapshot.val().NameofStudent;
+            document.getElementById("section").value=snapshot.val().Section;
+            document.getElementById("gender").value=snapshot.val().Gender;
+        });
+    }
+    /*Update Data*/
+    document.getElementById("update").onclick=function(){
+         getdata();
+         firebase.database().ref('student/'+rollnof).update({
+             NameofStudent :namef,
+             Section :sectionf,
+             Gender :genderf
+
+         });
+    }
+    /*Delete User*/
+    document.getElementById("delete").onclick=function(){
+         getdata();
+         firebase.database().ref('student/'+rollnof).remove();
+    }
+  </script>
+</body>
+</html>
